@@ -1,0 +1,27 @@
+# file: .github/workflows/project-check.yml
+name: project-check
+# on – определяет события, которые запускают воркфлоу
+on: push
+jobs:
+  # build – произвольно выбранное имя задания
+  # их может быть больше одного
+  build:
+    # операционная система для работы воркфлоу
+    runs-on: ubuntu-22.04
+    steps:
+      # checkout — клонирует репозиторий
+      - uses: actions/checkout@v4
+      - name: Setup PHP with composer v2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+      # run – произвольная bash-команда
+      - run: make install
+      - run: make lint
+#      - run: make test-coverage
+
+#      - name: SonarQube Scan
+#        uses: SonarSource/sonarqube-scan-action@v5
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

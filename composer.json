@@ -1,0 +1,27 @@
+{
+    "name": "hexlet/code",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "gmaslov-dev",
+            "email": "gennadiy.dev@yandex.ru"
+        }
+    ],
+    "scripts": {
+        "analyse": "phpstan analyse",
+        "lint": "vendor/bin/phpcs ./"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "phpstan/phpstan": "^2.1"
+    },
+    "require": {
+        "slim/slim": "^4.15",
+        "slim/psr7": "^1.7"
+    }
+}
