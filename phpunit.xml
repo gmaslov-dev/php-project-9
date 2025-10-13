@@ -1,0 +1,13 @@
+<phpunit>
+    <testsuites>
+        <testsuite name="default">
+            <!-- ваши тестовые наборы -->
+        </testsuite>
+    </testsuites>
+    <php>
+        <ini name="assert.exception" value="0"/>
+    </php>
+    <logging>
+        <log type="teamcity" target="phpunit.log"/>
+    </logging>
+</phpunit>

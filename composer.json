@@ -3,7 +3,8 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Hexlet\\Code\\": "src/"
+            "Hexlet\\Code\\": "src/",
+            "Hexlet\\Code\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -18,7 +19,8 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.4"
     },
     "require": {
         "slim/slim": "^4.15",

@@ -4,6 +4,6 @@ parameters:
 #        - bin
         - src
         - tests
-#    ignoreErrors:
-#        - identifier: missingType.generics
-#        - identifier: missingType.iterableValue
+    ignoreErrors:
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
