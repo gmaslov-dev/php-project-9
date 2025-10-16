@@ -9,7 +9,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class PageController
+readonly class PageController
 {
     public function __construct(private Twig $twig)
     {
@@ -24,8 +24,7 @@ class PageController
     {
         $response = $response->withHeader('Content-Type', 'text/html; charset=UTF-8');
         return $this->twig->render($response, 'pages/index.twig', [
-            'title' => 'Home',
-            'content' => 'Home'
+            'title' => 'Home'
         ]);
     }
 }
