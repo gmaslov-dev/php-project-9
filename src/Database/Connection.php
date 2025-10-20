@@ -17,11 +17,11 @@ final class Connection
         $dotenv->load();
 
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
-        $username = $databaseUrl['user']; // janedoe
-        $password = $databaseUrl['pass']; // mypassword
-        $host = $databaseUrl['host']; // localhost
-        $port = $databaseUrl['port']; // 5432
-        $dbName = ltrim($databaseUrl['path'], '/'); // mydb
+        $username = $databaseUrl['user'];
+        $password = $databaseUrl['pass'];
+        $host = $databaseUrl['host'];
+        $port = $databaseUrl['port'];
+        $dbName = ltrim($databaseUrl['path'], '/');
 
         $dsn = "pgsql:host={$host};dbname={$dbName};port={$port}";
         try {
