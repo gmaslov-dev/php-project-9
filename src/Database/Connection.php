@@ -4,6 +4,7 @@ namespace Hexlet\Code\Database;
 
 use Dotenv\Dotenv;
 use PDO;
+use PDOException;
 
 final class Connection
 {
@@ -13,7 +14,6 @@ final class Connection
     private function __construct()
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-        dump($dotenv);
         $dotenv->load();
 
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
@@ -31,6 +31,8 @@ final class Connection
         } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
+
+        $this->dbInit();
     }
 
     public static function getInstance(): self
@@ -45,5 +47,17 @@ final class Connection
     public function getConnection(): PDO
     {
         return $this->pdo;
+    }
+
+    private function dbInit()
+    {
+        $sqlFile = __DIR__ . '/../../database.sql';
+        try {
+            $pdo = $this->getConnection();
+            $sql = file_get_contents($sqlFile);
+            $pdo->exec($sql);
+        } catch (PDOException $e) {
+            echo "Ошибка выполнения SQL: " . $e->getMessage();
+        }
     }
 }

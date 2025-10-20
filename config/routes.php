@@ -1,10 +1,10 @@
 <?php
 
 use Hexlet\Code\Controller\PageController;
+use Hexlet\Code\Controller\UrlController;
 use Slim\App;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 
 return function (App $app) {
     $app->get('/', [PageController::class, 'index'])->setName('home');
+    $app->get('/urls', [UrlController::class, 'index'])->setName('urls');
 };

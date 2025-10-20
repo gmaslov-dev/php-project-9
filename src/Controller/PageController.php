@@ -23,7 +23,6 @@ readonly class PageController
      */
     public function index(Request $request, Response $response): Response
     {
-        dump($this->connection);
         $response = $response->withHeader('Content-Type', 'text/html; charset=UTF-8');
         return $this->twig->render($response, 'pages/index.twig', [
             'title' => 'Home'
