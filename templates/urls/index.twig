@@ -3,5 +3,26 @@
 {% block title %}Главная страница{% endblock %}
 
 {% block content %}
-    <h1>Pages</h1>
+    <div class="block">
+        <div class="row">
+            <div class="col">
+                <table class="table" data-test="urls">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>url</th>
+                            <th>created_at</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for url in urls %}
+                            <p>{{ url.id }}</p>
+                            <p>{{ url.name }}</p>
+                            <p>{{ url.createdAt }}</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}
