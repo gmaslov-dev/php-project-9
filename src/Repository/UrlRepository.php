@@ -5,30 +5,102 @@ namespace Hexlet\Code\Repository;
 use Hexlet\Code\Entity\Url;
 use PDO;
 
-class UrlRepository {
-    private PDO $pdo;
+class UrlRepository
+{
+    private PDO $conn;
 
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $conn)
     {
-        $this->pdo = $pdo;
+        $this->conn = $conn;
     }
 
-    public function save(Url $url): void
+    public function getEntities(): array
     {
-        $sql = "INSERT INTO urls (name, created_at) VALUES (:name, :created_at) RETURNING id";
-        $stmt = $this->pdo->prepare($sql);
+        $urls = [];
+        $sql = "SELECT * FROM urls";
+        $stmt = $this->conn->query($sql);
+
+        while ($row = $stmt->fetch()) {
+            $url = Url::fromArray([
+                'name' => $row['name'],
+                'created_at' => $row['created_at']
+            ]);
+            $url->setId($row['id']);
+            $urls[] = $url;
+        }
+
+        return $urls;
+    }
+
+    public function find(int $id): ?Url
+    {
+        $sql = "SELECT * FROM urls WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        if ($row = $stmt->fetch()) {
+            $url = Url::fromArray([
+                'name' => $row['name'],
+                'created_at' => $row['created_at']
+            ]);
+
+            $url->setId($row['id']);
+            return $url;
+        }
+        return null;
+    }
+
+    public function findByName(string $name): ?Url
+    {
+        $sql = "SELECT * FROM urls WHERE name = :name";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$name]);
+        if ($row = $stmt->fetch()) {
+            $url = Url::fromArray([
+                'name' => $row['name'],
+                'created_at' => $row['created_at']
+            ]);
+
+            $url->setId($row['id']);
+            return $url;
+        }
+        return null;
+    }
+
+    public function save(Url $url)
+    {
+        if ($url->exists()) {
+            $this->update($url);
+        } else {
+            $this->create($url);
+        }
+    }
+
+    public function update(Url $url)
+    {
+        $sql = "UPDATE urls SET name = :name, created_at = :created_at WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $id = $url->getId();
+        $name = $url->getName();
+        $createdAt = $url->getCreatedAt();
+
         $stmt->execute([
-            'name' => $url->getName(),
-            'created_at' => $url->getCreatedAt(),
+            'name' => $name,
+            'created_at' => $createdAt,
+            'id' => $id
         ]);
     }
 
-    public function getAll(): array
+    public function create(Url $url): void
     {
-        $sql = "SELECT * FROM urls";
-        $stmt = $this->pdo->query($sql);
-        $rows = $stmt->fetchAll();
-
-        return array_map(fn($row) => new Url($row['id'], $row['name'], $row['created_at']), $rows);
+        $sql = "INSERT INTO urls (name, created_at) VALUES (:name, :created_at)";
+        $stmt = $this->conn->prepare($sql);
+        $name = $url->getName();
+        $createdAt = $url->getCreatedAt();
+        $stmt->execute([
+            'name' => $name,
+            'created_at' => $createdAt
+        ]);
+        $id = (int) $this->conn->lastInsertId();
+        $url->setId($id);
     }
 }

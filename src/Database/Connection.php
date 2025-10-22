@@ -4,7 +4,6 @@ namespace Hexlet\Code\Database;
 
 use Dotenv\Dotenv;
 use PDO;
-use PDOException;
 
 final class Connection
 {

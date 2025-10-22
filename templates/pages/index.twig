@@ -11,10 +11,16 @@
                  <p class="lead">Безопасно проверяйте сайты на SEO пригодность</p>
              </div>
              <div class="row">
-                 <form action="#" class="d-flex">
+                 <form action="/urls" method="post" class="d-flex">
                      <div class="col-8">
-                         <label class="visually-hidden" for="url">Url сайта</label>
-                         <input class="form-control form-control-lg" name="url" id="url" type="url" placeholder="http://www.example.com">
+                         <label class="visually-hidden" for="name">Url сайта</label>
+                         <input
+                                 class="form-control form-control-lg"
+                                 name="url[name]"
+                                 id="name"
+                                 type="text"
+                                 placeholder="http://www.example.com"
+                         >
                      </div>
                      <div class="col-2">
                          <button class="btn btn-primary btn-lg ms-3 px-5 text-uppercase mx-3" type="submit">Проверить</button>
