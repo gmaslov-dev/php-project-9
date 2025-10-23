@@ -25,7 +25,9 @@ readonly class PageController
     {
         $response = $response->withHeader('Content-Type', 'text/html; charset=UTF-8');
         return $this->twig->render($response, 'pages/index.twig', [
-            'title' => 'Home'
+            'title' => 'Home',
+            'errors' => [],
+            'url'=> ''
         ]);
     }
 }

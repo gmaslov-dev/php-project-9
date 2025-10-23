@@ -11,4 +11,5 @@ return function (App $app) {
     $app->addErrorMiddleware(true, true, true);
     $app->add(MethodOverrideMiddleware::class);
     $app->add(TwigMiddleware::create($app, $container->get(Twig::class)));
+    $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 };

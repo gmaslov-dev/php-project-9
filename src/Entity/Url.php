@@ -2,6 +2,8 @@
 
 namespace Hexlet\Code\Entity;
 
+use Carbon\Carbon;
+
 class Url
 {
     public function __construct(
@@ -32,6 +34,10 @@ class Url
 
     public static function fromArray(array $data): self
     {
+        if (!isset($data['created_at'])) {
+            $data['created_at'] = Carbon::now()->toDateTimeString();
+        }
+
         return new self(
             $data['id'] ?? null,
             $data['name'],

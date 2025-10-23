@@ -3,6 +3,7 @@
 namespace Hexlet\Code\Controller;
 
 use Hexlet\Code\Repository\UrlRepository;
+use Hexlet\Code\Validator\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Routing\RouteContext;
@@ -39,35 +40,45 @@ class UrlController
     public function create(Request $request, Response $response): Response
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-
         $urlData = $request->getParsedBodyParam("url");
-        $v = new Validator($urlData);
-        $v->rules(['required' => ['name'],
-            'lengthMax' => [['name', 255]],
-            'url' => ['name']]);
-        $v->validate();
-        $errors = $v->errors();
-
+        $errors = UrlValidator::validate($urlData);
         if (!$errors) {
-            if ($this->urlRepository->findByName($urlData['name'])) {
+            $url = $this->urlRepository->findByName($urlData['name']);
+            if ($url) {
                 $this->flash->addMessage('success', 'Страница уже существует');
             } else {
-                $createdAt = Carbon::now()->toDateTimeString();
-                $url = Url::fromArray([
-                    'name' => $urlData['name'],
-                    'created_at' => $createdAt
-                ]);
+                $url = Url::fromArray(['name' => $urlData['name'], 'created_at' => $urlData['created_at']]);
                 $this->urlRepository->save($url);
                 $this->flash->addMessage('success', 'Страница добавлена');
             }
 
-            return $response->withRedirect($routeParser->urlFor('home'), 302);
+            $urlPath = $routeParser->urlFor('urls.show', ['id' => $url->getId()]);
+            return $response
+                ->withHeader('Location', $urlPath)
+                ->withStatus(302);
         }
 
         $params = [
             'url' => $urlData,
             'errors' => $errors,
         ];
-        return $this->view->render($response, '/pages/index.twig', $params);
+        dump($params);
+        return $this->view->render($response, '/pages/index.twig', $params)->withStatus(422);
+    }
+
+    public function show(Request $request, Response $response, $args): Response
+    {
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $id = $args['id'];
+        $url = $this->urlRepository->find($id);
+        if (!$url) {
+            return $response->withRedirect($routeParser->urlFor('home'), 302);
+        }
+
+        $data = [
+            'url' => $url,
+            'messages' => $this->flash->getMessages(),
+        ];
+        return $this->view->render($response, 'urls/show.twig', ['data' => $data]);
     }
 }

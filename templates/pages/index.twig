@@ -15,16 +15,31 @@
                      <div class="col-8">
                          <label class="visually-hidden" for="name">Url сайта</label>
                          <input
-                                 class="form-control form-control-lg"
+                                 class="form-control form-control-lg {% if data.errors.name %}is-invalid{% endif %}"
                                  name="url[name]"
                                  id="name"
                                  type="text"
                                  placeholder="http://www.example.com"
+                                 value="{{ data.url.name ?? '' }}"
+
                          >
+                         <div id="validationNameFeedback" class="invalid-feedback">
+                             {{ data.errors.name|first }}
+                         </div>
                      </div>
                      <div class="col-2">
                          <button class="btn btn-primary btn-lg ms-3 px-5 text-uppercase mx-3" type="submit">Проверить</button>
                      </div>
+
+
+{#                     <label for="validationServerUsername" class="form-label">Username</label>#}
+{#                     <div class="input-group has-validation">#}
+{#                         <span class="input-group-text" id="inputGroupPrepend3">@</span>#}
+{#                         <input type="text" class="form-control is-invalid" id="validationServerUsername" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" required>#}
+{#                         <div id="validationServerUsernameFeedback" class="invalid-feedback">#}
+{#                             Please choose a username.#}
+{#                         </div>#}
+{#                     </div>#}
                  </form>
             </div>
          </div>

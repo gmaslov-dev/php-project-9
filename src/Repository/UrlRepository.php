@@ -66,7 +66,7 @@ class UrlRepository
         return null;
     }
 
-    public function save(Url $url)
+    public function save(Url $url): void
     {
         if ($url->exists()) {
             $this->update($url);
@@ -75,7 +75,7 @@ class UrlRepository
         }
     }
 
-    public function update(Url $url)
+    public function update(Url $url): void
     {
         $sql = "UPDATE urls SET name = :name, created_at = :created_at WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
