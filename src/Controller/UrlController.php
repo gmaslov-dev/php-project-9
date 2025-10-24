@@ -11,9 +11,7 @@ use Slim\Views\Twig;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Valitron\Validator;
 use Hexlet\Code\Entity\Url;
-use Carbon\Carbon;
 use Slim\Flash\Messages;
 
 class UrlController
