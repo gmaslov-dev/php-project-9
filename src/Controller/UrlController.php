@@ -37,6 +37,11 @@ class UrlController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function create(Request $request, Response $response): Response
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
@@ -59,6 +64,7 @@ class UrlController
         }
 
         $params = [
+            'title' => 'Главная страница',
             'url' => $urlData,
             'errors' => $errors,
         ];
@@ -66,7 +72,12 @@ class UrlController
         return $this->view->render($response, '/pages/index.twig', $params)->withStatus(422);
     }
 
-    public function show(Request $request, Response $response, $args): Response
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function show(Request $request, Response $response, array $args): Response
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         $id = $args['id'];
@@ -76,9 +87,10 @@ class UrlController
         }
 
         $data = [
+            'title' => $url->getName(),
             'url' => $url,
             'messages' => $this->flash->getMessages(),
         ];
-        return $this->view->render($response, 'urls/show.twig', ['data' => $data]);
+        return $this->view->render($response, 'urls/show.twig', $data);
     }
 }

@@ -1,23 +1,38 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-    {% if data.messages %}
+    {% if messages %}
     <div class="alert alert-success" role="alert">
-        {{ data.messages.success[0] }}
+        {{ messages.success[0] }}
     </div>
     {% endif %}
 
-    <div class="container">
-        <h1>Current Url</h1>
-        {{ data.url.getId }}
-        {{ data.url.getName }}
-
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <h1>Сайт: {{ url.getName }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered table-responsive table-hover">
+                    <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>{{ url.getId }}</td>
+                        </tr>
+                        <tr>
+                            <td>Имя</td>
+                            <td>{{ url.getName }}</td>
+                        </tr>
+                        <tr>
+                            <td>Дата создания</td>
+                            <td>{{ url.getCreatedAt }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-
-{% for message in data.messges %}
-<p>{{ message.success }}</p>
-{% endfor %}
-
 
 {% endblock %}
