@@ -7,9 +7,9 @@ use Carbon\Carbon;
 class Url
 {
     public function __construct(
-        private ?int            $id = null,
         private readonly string $name,
-        private readonly string $createdAt
+        private readonly string $createdAt,
+        private ?int $id = null,
     ) {}
 
     public function getId(): ?int
@@ -39,9 +39,9 @@ class Url
         }
 
         return new self(
-            $data['id'] ?? null,
             $data['name'],
-            $data['created_at']
+            $data['created_at'],
+            $data['id'] ?? null
         );
     }
 
