@@ -5,14 +5,14 @@
 </div>
 <div class="row">
     <div class="col">
-        <form action="">
+        <form action="{{ url_for('checks.create', { 'url_id': urlId }) }}">
             <button class="btn btn-primary" type="submit">Запустить проверку</button>
         </form>
     </div>
 </div>
 <div class="row mt-3">
     <div class="col">
-        <table class="table table-bordered table-responsive table-hover">
+        <table class="table table-bordered table-responsive table-hover" data-test="checks">
             <thead>
             <tr>
                 <th>ID</th>

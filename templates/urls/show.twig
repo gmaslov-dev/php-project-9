@@ -34,6 +34,6 @@
             </div>
         </div>
         {# TODO обдумать возможность вынесения в отдельный файл куска шаблона с формой и таблицей #}
-        {% include './checks/index.twig' %}
+        {% include './checks/index.twig' with {urlId: url.getId } %}
     </div>
 {% endblock %}
