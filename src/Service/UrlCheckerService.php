@@ -20,6 +20,7 @@ readonly class UrlCheckerService
     ) {
     }
 
+    // TODO переделать на бибилиотеке imangazaliev/didom и на хелпире optional
     public function checkUrlById(int $urlId): ?Check
     {
         $url = $this->urlRepository->findById($urlId);
