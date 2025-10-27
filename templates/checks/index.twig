@@ -5,7 +5,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <form action="{{ url_for('checks.create', { 'url_id': urlId }) }}">
+        <form action="{{ url_for('checks.create', { 'url_id': urlId }) }}" method="post">
             <button class="btn btn-primary" type="submit">Запустить проверку</button>
         </form>
     </div>
@@ -24,16 +24,17 @@
             </tr>
             </thead>
             <tbody>
+            {% for check in checks %}
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ check.getId }}</td>
+                <td>{{ check.statusCode }}</td>
+                <td>{{ check.getH1 }}</td>
+                <td>{{ check.getTitle }}</td>
+                <td>{{ check.getDescription }}</td>
+                <td>{{ check.getCreatedAt }}</td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
-    {{ include  }}
 </div>

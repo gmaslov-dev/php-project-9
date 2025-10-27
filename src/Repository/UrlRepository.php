@@ -14,7 +14,7 @@ class UrlRepository
         $this->conn = $conn;
     }
 
-    public function getEntities(): array
+    public function getAll(): array
     {
         $urls = [];
         $sql = "SELECT * FROM urls";
@@ -32,7 +32,7 @@ class UrlRepository
         return $urls;
     }
 
-    public function find(int $id): ?Url
+    public function findById(int $id): ?Url
     {
         $sql = "SELECT * FROM urls WHERE id = :id";
         $stmt = $this->conn->prepare($sql);

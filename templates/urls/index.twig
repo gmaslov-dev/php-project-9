@@ -25,8 +25,8 @@
                         <tr>
                             <td>{{ url.id }}</td>
                             <td><a href="{{ url_for('urls.show', { 'id': url.id }) }}">{{ url.name }}</a></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ url.lastCheckDate }}</td>
+                            <td>{{ url.lastCheckStatus }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

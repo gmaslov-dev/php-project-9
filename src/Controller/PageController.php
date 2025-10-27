@@ -30,7 +30,7 @@ readonly class PageController
             'errors' => [],
             'url' => ''
         ];
-        dump($data);
+
         return $this->twig->render($response, 'pages/index.twig', $data);
     }
 }

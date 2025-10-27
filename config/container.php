@@ -1,12 +1,15 @@
 <?php
 
 use DI\Container;
+use GuzzleHttp\Client;
 use Hexlet\Code\Database\Connection;
+use Hexlet\Code\Repository\CheckRepository;
 use Hexlet\Code\Repository\UrlRepository;
+use Hexlet\Code\Service\CheckService;
+use Hexlet\Code\Service\UrlCheckerService;
+use Hexlet\Code\Service\UrlCheckService;
 use Slim\Flash\Messages;
-use Slim\Psr7\Request;
-use Slim\Routing\RouteContext;
-use Slim\Routing\RouteParser;
+
 use Slim\Views\Twig;
 
 $container = new Container();
@@ -21,6 +24,31 @@ $container->set(Connection::class, function () {
 
 $container->set(UrlRepository::class, function ($container) {
     return new UrlRepository($container->get(Connection::class)->connect());
+});
+
+$container->set(CheckRepository::class, function ($container) {
+    return new CheckRepository($container->get(Connection::class)->connect());
+});
+
+$container->set(CheckService::class, function ($container) {
+    return new CheckService($container->get(CheckRepository::class));
+});
+
+$container->set(UrlCheckService::class, function ($container) {
+    return new UrlCheckService($container->get(UrlRepository::class), $container->get(CheckRepository::class));
+});
+
+$container->set(Client::class, function () {
+    return new Client([
+        'timeout' => 5,
+        'verify' => true,
+        'http_errors' => false,
+        'allow_redirects' => true,
+    ]);
+});
+
+$container->set(UrlCheckerService::class, function ($container) {
+    return new UrlCheckerService($container->get(Client::class), $container->get(UrlRepository::class), $container->get(CheckRepository::class));
 });
 
 $container->set(Slim\Flash\Messages::class, fn() => new Messages());

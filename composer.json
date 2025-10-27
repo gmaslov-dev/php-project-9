@@ -6,6 +6,9 @@
             "Hexlet\\Code\\": "src/"
         }
     },
+    "bin": [
+        "bin/init_db.php"
+    ],
     "authors": [
         {
             "name": "gmaslov-dev",
@@ -14,7 +17,8 @@
     ],
     "scripts": {
         "analyse": "phpstan analyse",
-        "lint": "vendor/bin/phpcs ./"
+        "lint": "vendor/bin/phpcs ./",
+        "db:init": "php bin/init_db.php"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*",
@@ -32,6 +36,8 @@
         "vlucas/valitron": "^1.4",
         "nesbot/carbon": "^3.10",
         "slim/http": "^1.4",
-        "slim/flash": "^0.4.0"
+        "slim/flash": "^0.4.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "ext-dom": "*"
     }
 }

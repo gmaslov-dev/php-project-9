@@ -3,6 +3,8 @@
 namespace Hexlet\Code\Controller;
 
 use Hexlet\Code\Repository\UrlRepository;
+use Hexlet\Code\Service\CheckService;
+use Hexlet\Code\Service\UrlCheckService;
 use Hexlet\Code\Validator\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -19,7 +21,9 @@ class UrlController
     public function __construct(
         protected Twig $view,
         protected UrlRepository $urlRepository,
-        protected Messages $flash
+        protected Messages $flash,
+        protected CheckService $checkService,
+        protected UrlCheckService $urlCheckService
     ) {
     }
 
@@ -30,8 +34,10 @@ class UrlController
      */
     public function index(Request $request, Response $response): Response
     {
+        $urlsWithLastCheck = $this->urlCheckService->getUrlsWithLastCheck();
+
         return $this->view->render($response, 'urls/index.twig', [
-            'urls' => $this->urlRepository->getEntities(),
+            'urls' => $urlsWithLastCheck,
         ]);
     }
 
@@ -66,7 +72,6 @@ class UrlController
             'url' => $urlData,
             'errors' => $errors,
         ];
-        dump($params);
         return $this->view->render($response, '/pages/index.twig', $params)->withStatus(422);
     }
 
@@ -79,15 +84,18 @@ class UrlController
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         $id = $args['id'];
-        $url = $this->urlRepository->find($id);
+        $url = $this->urlRepository->findById($id);
         if (!$url) {
             return $response->withRedirect($routeParser->urlFor('home'), 302);
         }
+
+        $checks = $this->checkService->getChecksForUrl($id);
 
         $data = [
             'title' => $url->getName(),
             'url' => $url,
             'messages' => $this->flash->getMessages(),
+            'checks' => $checks,
         ];
         return $this->view->render($response, 'urls/show.twig', $data);
     }
