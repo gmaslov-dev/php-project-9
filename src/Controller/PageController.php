@@ -28,7 +28,8 @@ readonly class PageController
         $data = [
             'title' => 'Home',
             'errors' => [],
-            'url' => ''
+            'url' => '',
+            'current_path' => $request->getUri()->getPath()
         ];
 
         return $this->twig->render($response, 'pages/index.twig', $data);

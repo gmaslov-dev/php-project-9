@@ -37,6 +37,7 @@ class UrlController
         $urlsWithLastCheck = $this->urlCheckService->getUrlsWithLastCheck();
 
         return $this->view->render($response, 'urls/index.twig', [
+            'current_path' => $request->getUri()->getPath(),
             'urls' => $urlsWithLastCheck,
         ]);
     }

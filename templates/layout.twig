@@ -6,7 +6,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        {% include './components/_header.twig' %}
+        {% include './components/_header.twig' with {current_path: current_path} %}
     </header>
     <main class="flex-grow-1">
         {% block content %}{% endblock %}
