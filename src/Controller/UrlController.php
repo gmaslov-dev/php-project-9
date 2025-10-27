@@ -56,7 +56,7 @@ class UrlController
             if ($url) {
                 $this->flash->addMessage('success', 'Страница уже существует');
             } else {
-                $url = Url::fromArray(['name' => $urlData['name'], 'created_at' => $urlData['created_at']]);
+                $url = Url::fromArray(['name' => $urlData['name']]);
                 $this->urlRepository->save($url);
                 $this->flash->addMessage('success', 'Страница добавлена');
             }
