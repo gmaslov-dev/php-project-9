@@ -28,12 +28,11 @@ class CheckController
             return $response->withStatus(404);
         }
 
-
         $check = $this->urlCheckerService->checkUrlById($urlId);
-        //$this->checkRepository->save($check);
+        $this->checkRepository->save($check);
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        $url = $routeParser->urlFor('urls.show', ['id' => $urlId]);
+        $url = $routeParser->urlFor('urls.show', ['id' => (string) $urlId]);
 
         $this->flash->addMessage('success', 'Страница успешно проверена');
 

@@ -2,25 +2,21 @@
 
 namespace Hexlet\Code\Service;
 
-use DOMDocument;
+use DiDom\Document;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Hexlet\Code\Entity\Check;
-use Hexlet\Code\Repository\CheckRepository;
 use Hexlet\Code\Repository\UrlRepository;
 
 readonly class UrlCheckerService
 {
-    // Логика HTTP-запроса, извлечение данных, обработка ошибок
     public function __construct(
         private Client $httpClient,
         private UrlRepository $urlRepository,
-        private CheckRepository $checkRepository
     ) {
     }
 
-    // TODO переделать на бибилиотеке imangazaliev/didom и на хелпире optional
     public function checkUrlById(int $urlId): ?Check
     {
         $url = $this->urlRepository->findById($urlId);
@@ -28,46 +24,25 @@ readonly class UrlCheckerService
             return null;
         }
 
-        $statusCode = null;
-        $h1 = null;
-        $title = null;
-        $description = null;
+        $name = $url->getName();
 
         try {
-            $res = $this->httpClient->request('GET', $url->getName());
+            $res = $this->httpClient->request('GET', $name);
             $statusCode = $res->getStatusCode();
-            $html = (string) $res->getBody();
-
-            $dom = new DOMDocument();
-            @$dom->loadHTML($html);
-
-            $h1Node = $dom->getElementsByTagName('h1')->item(0);
-            $h1 = $h1Node?->textContent;
-
-            $titleNode = $dom->getElementsByTagName('title')->item(0);
-            $title = $titleNode?->textContent;
-
-            $metas = $dom->getElementsByTagName('meta');
-            foreach ($metas as $meta) {
-                if (strtolower($meta->getAttribute('name')) === 'description') {
-                    $description = $meta->getAttribute('content');
-                    break;
-                }
-            }
+            $doc = new Document($name, true);
+            $h1 = optional($doc->first('h1'))->text();
+            $title = optional($doc->first('title'))->text();
+            $metaDescription = optional($doc->first('meta[name="description"]'))->attr('content');
         } catch (RequestException | GuzzleException) {
             return null;
         }
 
-        $check = Check::fromArray([
+        return Check::fromArray([
             'url_id' => $urlId,
             'status_code' => $statusCode,
             'h1' => $h1,
             'title' => $title,
-            'description' => $description
+            'description' => $metaDescription
         ]);
-
-        $this->checkRepository->save($check);
-
-        return $check;
     }
 }

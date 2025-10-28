@@ -14,8 +14,12 @@ class CheckRepository
         $this->conn = $conn;
     }
 
-    public function save(Check $check): int
+    public function save(?Check $check): int|null
     {
+        if(!$check) {
+            return null;
+        }
+
         $sql = "INSERT INTO checks (url_id, status_code, h1, title, description, created_at) VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
