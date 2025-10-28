@@ -59,7 +59,7 @@ class UrlController
             } else {
                 $url = Url::fromArray(['name' => $urlData['name']]);
                 $this->urlRepository->save($url);
-                $this->flash->addMessage('success', 'Страница добавлена');
+                $this->flash->addMessage('success', 'Страница успешно добавлена');
             }
 
             $urlPath = $routeParser->urlFor('urls.show', ['id' => $url->getId()]);
