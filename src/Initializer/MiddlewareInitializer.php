@@ -23,7 +23,7 @@ readonly class MiddlewareInitializer
         $container = $app->getContainer();
 
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);
-        $errorMiddleware->setDefaultErrorHandler($container?->get(ErrorHandler::class));
+        $errorMiddleware->setDefaultErrorHandler($container->get(ErrorHandler::class));
 
         $app->add(MethodOverrideMiddleware::class);
         $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
