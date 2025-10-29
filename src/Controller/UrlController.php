@@ -8,6 +8,7 @@ use Hexlet\Code\Service\UrlCheckService;
 use Hexlet\Code\Validator\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use Twig\Error\LoaderError;
@@ -84,11 +85,13 @@ class UrlController
     public function show(Request $request, Response $response, array $args): Response
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        $id = $args['id'];
+        $id = (int) $args['id'];
         $url = $this->urlRepository->findById($id);
         if (!$url) {
-            return $response->withRedirect($routeParser->urlFor('home'), 302);
+            return throw new HttpNotFoundException($request);
         }
+
+
 
         $checks = $this->checkService->getChecksForUrl($id);
 

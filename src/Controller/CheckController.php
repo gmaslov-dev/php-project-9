@@ -23,21 +23,28 @@ class CheckController
     public function create(Request $request, Response $response, array $args): Response
     {
         $urlId = (int) $args['url_id'];
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $redirectUrl = $routeParser->urlFor('urls.show', ['id' => (string) $urlId]);
 
         if (!$urlId) {
-            return $response->withStatus(404);
+            $this->flash->addMessage('danger', 'Некорректный ID URL');
+            return $response->withHeader('Location', '/')->withStatus(302);
         }
 
         $check = $this->urlCheckerService->checkUrlById($urlId);
+
+        if (!$check) {
+            $this->flash->addMessage('danger', 'Произошла ошибка при проверке, не удалось подключиться');
+            return $response
+                ->withHeader('Location', $redirectUrl)
+                ->withStatus(302);
+        }
+
         $this->checkRepository->save($check);
-
-        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        $url = $routeParser->urlFor('urls.show', ['id' => (string) $urlId]);
-
         $this->flash->addMessage('success', 'Страница успешно проверена');
 
         return $response
-            ->withHeader('Location', $url)
+            ->withHeader('Location', $redirectUrl)
             ->withStatus(302);
     }
 }

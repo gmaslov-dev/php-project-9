@@ -33,16 +33,18 @@ readonly class UrlCheckerService
             $h1 = optional($doc->first('h1'))->text();
             $title = optional($doc->first('title'))->text();
             $metaDescription = optional($doc->first('meta[name="description"]'))->attr('content');
+
+            return Check::fromArray([
+                'url_id' => $urlId,
+                'status_code' => $statusCode,
+                'h1' => $h1,
+                'title' => $title,
+                'description' => $metaDescription
+            ]);
         } catch (RequestException | GuzzleException) {
             return null;
         }
 
-        return Check::fromArray([
-            'url_id' => $urlId,
-            'status_code' => $statusCode,
-            'h1' => $h1,
-            'title' => $title,
-            'description' => $metaDescription
-        ]);
+
     }
 }

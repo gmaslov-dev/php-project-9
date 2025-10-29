@@ -3,6 +3,7 @@
 use DI\Container;
 use GuzzleHttp\Client;
 use Hexlet\Code\Database\Connection;
+use Hexlet\Code\Handler\ErrorHandler;
 use Hexlet\Code\Repository\CheckRepository;
 use Hexlet\Code\Repository\UrlRepository;
 use Hexlet\Code\Service\CheckService;
@@ -51,6 +52,10 @@ $container->set(UrlCheckerService::class, function ($container) {
     return new UrlCheckerService($container->get(Client::class), $container->get(UrlRepository::class), $container->get(CheckRepository::class));
 });
 
-$container->set(Slim\Flash\Messages::class, fn() => new Messages());
+$container->set(Messages::class, fn() => new Messages());
+
+$container->set(ErrorHandler::class, function ($container) {
+    return new ErrorHandler($container->get(Twig::class));
+});
 
 return $container;

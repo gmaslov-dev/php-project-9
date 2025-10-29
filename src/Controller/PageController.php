@@ -2,6 +2,7 @@
 
 namespace Hexlet\Code\Controller;
 
+use Slim\Flash\Messages;
 use Slim\Views\Twig;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -12,7 +13,7 @@ use Twig\Error\SyntaxError;
 readonly class PageController
 {
     public function __construct(
-        private Twig $twig
+        private Twig $twig,
     ) {
     }
 

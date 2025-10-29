@@ -9,6 +9,17 @@
         {% include './components/_header.twig' with {current_path: current_path} %}
     </header>
     <main class="flex-grow-1">
+        {% if messages.success %}
+            <div class="alert alert-success" role="alert">
+                {{ messages.success[0] }}
+            </div>
+        {% endif %}
+
+        {% if messages.danger %}
+            <div class="alert alert-warning" role="alert">
+                {{ messages.danger[0] }}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
     <footer class="border-top">
