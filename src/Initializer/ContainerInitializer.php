@@ -2,6 +2,7 @@
 
 namespace Hexlet\Code\Initializer;
 
+use DI\Container;
 use GuzzleHttp\Client;
 use Hexlet\Code\Database\Connection;
 use Hexlet\Code\Handler\ErrorHandler;
@@ -16,8 +17,9 @@ use Slim\Views\Twig;
 
 readonly class ContainerInitializer
 {
-    public static function init(App $app)
+    public static function init(App $app): void
     {
+        /** @var Container $container */
         $container = $app->getContainer();
         $container->set(Twig::class, function () {
             return Twig::create(__DIR__ . '/../../templates', ['cache' => false, 'debug' => true]);
