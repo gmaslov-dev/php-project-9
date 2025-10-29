@@ -17,6 +17,9 @@ use Slim\Views\Twig;
 
 readonly class ContainerInitializer
 {
+    /**
+     * @param App<Container> $app
+     */
     public static function init(App $app): void
     {
         /** @var Container $container */

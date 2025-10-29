@@ -2,6 +2,7 @@
 
 namespace Hexlet\Code\Initializer;
 
+use DI\Container;
 use Hexlet\Code\Handler\ErrorHandler;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -13,6 +14,7 @@ use Slim\Views\TwigMiddleware;
 readonly class MiddlewareInitializer
 {
     /**
+     * @param App<Container> $app
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */

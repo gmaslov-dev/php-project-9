@@ -2,6 +2,7 @@
 
 namespace Hexlet\Code\Initializer;
 
+use DI\Container;
 use Hexlet\Code\Controller\CheckController;
 use Hexlet\Code\Controller\PageController;
 use Hexlet\Code\Controller\UrlController;
@@ -9,6 +10,9 @@ use Slim\App;
 
 readonly class RouteInitializer
 {
+    /**
+     * @param App<Container> $app
+     */
     public static function init(App $app): void
     {
         $app->get('/', [PageController::class, 'index'])->setName('home');
