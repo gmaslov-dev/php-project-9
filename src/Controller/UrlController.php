@@ -85,14 +85,11 @@ class UrlController
      */
     public function show(Request $request, Response $response, array $args): Response
     {
-        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         $id = (int) $args['id'];
         $url = $this->urlRepository->findById($id);
         if (!$url) {
             return throw new HttpNotFoundException($request);
         }
-
-
 
         $checks = $this->checkService->getChecksForUrl($id);
 
