@@ -18,7 +18,7 @@ use Twig\Error\SyntaxError;
 use Hexlet\Code\Entity\Url;
 use Slim\Flash\Messages;
 
-class UrlController
+readonly class UrlController
 {
     public function __construct(
         protected Twig $view,

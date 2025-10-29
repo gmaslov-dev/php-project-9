@@ -10,7 +10,7 @@ use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use Slim\Flash\Messages;
 
-class CheckController
+readonly class CheckController
 {
     public function __construct(
         protected Twig $view,

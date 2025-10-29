@@ -19,8 +19,8 @@ readonly class RouteInitializer
         // urls
         $app->get('/urls', [UrlController::class, 'index'])->setName('urls');
         $app->post('/urls', [UrlController::class, 'create'])->setName('urls.create');
-        $app->get('/urls/{id}', [UrlController::class, 'show'])->setName('urls.show');
+        $app->get('/urls/{id:[0-9]+}', [UrlController::class, 'show'])->setName('urls.show');
         // checks
-        $app->post('/urls/{url_id}/checks', [CheckController::class, 'create'])->setName('checks.create');
+        $app->post('/urls/{url_id:[0-9]+}/checks', [CheckController::class, 'create'])->setName('checks.create');
     }
 }
