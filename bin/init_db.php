@@ -12,6 +12,10 @@ $pdo = Connection::get()->connect();
 $sqlFile = __DIR__ . '/../src/Database/database.sql';
 $sql = file_get_contents($sqlFile);
 
+if ($sql === false) {
+    throw new RuntimeException('Cannot read SQL dump file');
+}
+
 try {
     $pdo->exec($sql);
     echo "✅ Database initialized successfully!\n";

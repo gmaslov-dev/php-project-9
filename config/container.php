@@ -49,7 +49,7 @@ $container->set(Client::class, function () {
 });
 
 $container->set(UrlCheckerService::class, function ($container) {
-    return new UrlCheckerService($container->get(Client::class), $container->get(UrlRepository::class), $container->get(CheckRepository::class));
+    return new UrlCheckerService($container->get(Client::class), $container->get(UrlRepository::class));
 });
 
 $container->set(Messages::class, fn() => new Messages());
