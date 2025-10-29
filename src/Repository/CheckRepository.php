@@ -20,7 +20,10 @@ class CheckRepository
             return null;
         }
 
-        $sql = "INSERT INTO checks (url_id, status_code, h1, title, description, created_at) VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)";
+        $sql = <<<SQL
+        INSERT INTO checks (url_id, status_code, h1, title, description, created_at)
+        VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)
+        SQL;
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
             'url_id' => $check->getUrlId(),
