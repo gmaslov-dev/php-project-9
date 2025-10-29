@@ -3,6 +3,8 @@
 namespace Hexlet\Code\Initializer;
 
 use Hexlet\Code\Handler\ErrorHandler;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Slim\App;
 use Slim\Middleware\MethodOverrideMiddleware;
 use Slim\Views\Twig;
@@ -10,6 +12,10 @@ use Slim\Views\TwigMiddleware;
 
 readonly class MiddlewareInitializer
 {
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public static function init(App $app): void
     {
         $container = $app->getContainer();

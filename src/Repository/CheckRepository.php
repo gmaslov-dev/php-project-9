@@ -58,7 +58,7 @@ class CheckRepository
         }, $rows);
     }
 
-    public function findLastByUrlId($urlId)
+    public function findLastByUrlId(int $urlId): ?Check
     {
         $sql = "SELECT * FROM checks WHERE url_id = :url_id ORDER BY created_at DESC LIMIT 1";
         $stmt = $this->conn->prepare($sql);

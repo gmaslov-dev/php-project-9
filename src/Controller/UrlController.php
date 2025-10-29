@@ -9,6 +9,7 @@ use Hexlet\Code\Validator\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Http\ServerRequest;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use Twig\Error\LoaderError;
@@ -48,7 +49,7 @@ class UrlController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function create(Request $request, Response $response): Response
+    public function create(ServerRequest $request, Response $response): Response
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
         $urlData = $request->getParsedBodyParam("url");
@@ -63,7 +64,7 @@ class UrlController
                 $this->flash->addMessage('success', 'Страница успешно добавлена');
             }
 
-            $urlPath = $routeParser->urlFor('urls.show', ['id' => $url->getId()]);
+            $urlPath = $routeParser->urlFor('urls.show', ['id' => (string) $url->getId()]);
             return $response
                 ->withHeader('Location', $urlPath)
                 ->withStatus(302);

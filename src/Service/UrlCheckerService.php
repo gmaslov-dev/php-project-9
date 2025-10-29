@@ -3,6 +3,7 @@
 namespace Hexlet\Code\Service;
 
 use DiDom\Document;
+use DiDom\Exceptions\InvalidSelectorException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -17,6 +18,9 @@ readonly class UrlCheckerService
     ) {
     }
 
+    /**
+     * @throws InvalidSelectorException
+     */
     public function checkUrlById(int $urlId): ?Check
     {
         $url = $this->urlRepository->findById($urlId);
@@ -30,8 +34,11 @@ readonly class UrlCheckerService
             $res = $this->httpClient->request('GET', $name);
             $statusCode = $res->getStatusCode();
             $doc = new Document($name, true);
+            /** @phpstan-ignore-next-line */
             $h1 = optional($doc->first('h1'))->text();
+            /** @phpstan-ignore-next-line */
             $title = optional($doc->first('title'))->text();
+            /** @phpstan-ignore-next-line */
             $metaDescription = optional($doc->first('meta[name="description"]'))->attr('content');
 
             return Check::fromArray([
