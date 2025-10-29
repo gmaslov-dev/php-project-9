@@ -10,7 +10,8 @@ class Url
         private readonly string $name,
         private readonly string $createdAt,
         private ?int $id = null,
-    ) {}
+    ) {
+    }
 
     public function getId(): ?int
     {

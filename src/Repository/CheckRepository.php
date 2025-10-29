@@ -16,7 +16,7 @@ class CheckRepository
 
     public function save(?Check $check): int|null
     {
-        if(!$check) {
+        if (!$check) {
             return null;
         }
 

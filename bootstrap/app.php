@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Slim\Factory\AppFactory;
 use Carbon\Carbon;
+
 session_start();
 
 $container = require __DIR__ . '/../config/container.php';

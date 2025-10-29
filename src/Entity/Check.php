@@ -74,6 +74,4 @@ class Check
             $data['description'] ?? null,
         );
     }
-
-
 }

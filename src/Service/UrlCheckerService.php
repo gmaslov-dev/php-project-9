@@ -44,7 +44,5 @@ readonly class UrlCheckerService
         } catch (RequestException | GuzzleException) {
             return null;
         }
-
-
     }
 }
