@@ -34,7 +34,7 @@ abstract class BaseController
         $this->flash->addMessage($type, $message);
     }
 
-    protected function getFlashMessages(): array
+    protected function getFlash(): array
     {
         return $this->flash->getMessages();
     }

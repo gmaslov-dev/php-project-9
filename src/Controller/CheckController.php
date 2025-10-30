@@ -46,7 +46,7 @@ class CheckController extends BaseController
         }
 
         $this->checkRepository->save($check);
-        $this->flash->addMessage('success', 'Страница успешно проверена');
+        $this->addFlash('success', 'Страница успешно проверена');
 
         return $response
             ->withHeader('Location', $redirectUrl)

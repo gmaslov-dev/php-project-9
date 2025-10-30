@@ -97,7 +97,7 @@ class UrlController extends BaseController
         $data = [
             'title' => $url->getName(),
             'url' => $url,
-            'messages' => $this->flash->getMessages(),
+            'messages' => $this->getFlash(),
             'checks' => $checks,
         ];
         return $this->render($response, 'urls/show.twig', $data);
