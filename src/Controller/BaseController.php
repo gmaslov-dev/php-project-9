@@ -3,6 +3,7 @@
 namespace Hexlet\Code\Controller;
 
 use Slim\Flash\Messages;
+use Slim\Interfaces\RouteParserInterface;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -39,7 +40,7 @@ abstract class BaseController
         return $this->flash->getMessages();
     }
 
-    protected function getRouteParser(Request $request): \Slim\Interfaces\RouteParserInterface
+    protected function getRouteParser(Request $request): RouteParserInterface
     {
         return RouteContext::fromRequest($request)->getRouteParser();
     }
