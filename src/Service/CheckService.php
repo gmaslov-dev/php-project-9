@@ -4,7 +4,7 @@ namespace Hexlet\Code\Service;
 
 use Hexlet\Code\Repository\CheckRepository;
 
-class CheckService
+readonly class CheckService
 {
     private CheckRepository $checkRepository;
 
