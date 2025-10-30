@@ -18,15 +18,16 @@ use Twig\Error\SyntaxError;
 use Hexlet\Code\Entity\Url;
 use Slim\Flash\Messages;
 
-readonly class UrlController
+class UrlController extends BaseController
 {
     public function __construct(
-        protected Twig $view,
+        Twig $view,
+        Messages $flash,
         protected UrlRepository $urlRepository,
-        protected Messages $flash,
         protected CheckService $checkService,
         protected UrlCheckService $urlCheckService
     ) {
+        parent::__construct($view, $flash);
     }
 
     /**
@@ -38,7 +39,7 @@ readonly class UrlController
     {
         $urlsWithLastCheck = $this->urlCheckService->getUrlsWithLastCheck();
 
-        return $this->view->render($response, 'urls/index.twig', [
+        return $this->render($response, 'urls/index.twig', [
             'current_path' => $request->getUri()->getPath(),
             'urls' => $urlsWithLastCheck,
         ]);
@@ -51,17 +52,17 @@ readonly class UrlController
      */
     public function create(ServerRequest $request, Response $response): Response
     {
-        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $routeParser = $this->getRouteParser($request);
         $urlData = $request->getParsedBodyParam("url");
         $errors = UrlValidator::validate($urlData);
         if (!$errors) {
             $url = $this->urlRepository->findByName($urlData['name']);
             if ($url) {
-                $this->flash->addMessage('success', 'Страница уже существует');
+                $this->addFlash('success', 'Страница уже существует');
             } else {
                 $url = Url::fromArray(['name' => $urlData['name']]);
                 $this->urlRepository->save($url);
-                $this->flash->addMessage('success', 'Страница успешно добавлена');
+                $this->addFlash('success', 'Страница успешно добавлена');
             }
 
             $urlPath = $routeParser->urlFor('urls.show', ['id' => (string) $url->getId()]);
@@ -75,7 +76,7 @@ readonly class UrlController
             'url' => $urlData,
             'errors' => $errors,
         ];
-        return $this->view->render($response, '/pages/index.twig', $params)->withStatus(422);
+        return $this->render($response, '/pages/index.twig', $params)->withStatus(422);
     }
 
     /**
@@ -99,6 +100,6 @@ readonly class UrlController
             'messages' => $this->flash->getMessages(),
             'checks' => $checks,
         ];
-        return $this->view->render($response, 'urls/show.twig', $data);
+        return $this->render($response, 'urls/show.twig', $data);
     }
 }

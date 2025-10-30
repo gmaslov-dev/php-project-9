@@ -2,6 +2,7 @@
 
 namespace Hexlet\Code\Controller;
 
+use DiDom\Exceptions\InvalidSelectorException;
 use Hexlet\Code\Repository\CheckRepository;
 use Hexlet\Code\Service\UrlCheckerService;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -10,7 +11,7 @@ use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use Slim\Flash\Messages;
 
-readonly class CheckController
+class CheckController extends BaseController
 {
     public function __construct(
         protected Twig $view,
@@ -18,23 +19,27 @@ readonly class CheckController
         protected Messages $flash,
         protected UrlCheckerService $urlCheckerService,
     ) {
+        parent::__construct($view, $flash);
     }
 
+    /**
+     * @throws InvalidSelectorException
+     */
     public function create(Request $request, Response $response, array $args): Response
     {
         $urlId = (int) $args['url_id'];
-        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $routeParser = $this->getRouteParser($request);
         $redirectUrl = $routeParser->urlFor('urls.show', ['id' => (string) $urlId]);
 
         if (!$urlId) {
-            $this->flash->addMessage('danger', 'Некорректный ID URL');
+            $this->addFlash('danger', 'Некорректный ID URL');
             return $response->withHeader('Location', '/')->withStatus(302);
         }
 
         $check = $this->urlCheckerService->checkUrlById($urlId);
 
         if (!$check) {
-            $this->flash->addMessage('danger', 'Произошла ошибка при проверке, не удалось подключиться');
+            $this->addFlash('danger', 'Произошла ошибка при проверке, не удалось подключиться');
             return $response
                 ->withHeader('Location', $redirectUrl)
                 ->withStatus(302);

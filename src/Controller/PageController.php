@@ -2,21 +2,14 @@
 
 namespace Hexlet\Code\Controller;
 
-use Slim\Flash\Messages;
-use Slim\Views\Twig;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-readonly class PageController
+class PageController extends BaseController
 {
-    public function __construct(
-        private Twig $twig,
-    ) {
-    }
-
     /**
      * @throws RuntimeError
      * @throws SyntaxError
@@ -33,6 +26,6 @@ readonly class PageController
             'current_path' => $request->getUri()->getPath()
         ];
 
-        return $this->twig->render($response, 'pages/index.twig', $data);
+        return $this->render($response, 'pages/index.twig', $data);
     }
 }
