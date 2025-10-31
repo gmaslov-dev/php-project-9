@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 use Hexlet\Code\Database\Connection;
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $pdo = Connection::get()->connect();
 
