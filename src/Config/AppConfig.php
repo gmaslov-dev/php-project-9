@@ -30,7 +30,7 @@ class AppConfig
         $dbName = ltrim($components['path'], '/');
 
 
-        $dsn = "pgsql:host=$host;port=5432;dbname=$dbName;sslmode=require";
+        $dsn = "pgsql:host=$host;port=5432;dbname=$dbName;";
 
         return [
             'dsn' => $dsn,
