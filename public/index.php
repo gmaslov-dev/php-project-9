@@ -11,13 +11,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
-$container = new Container();
-$app = AppFactory::createFromContainer($container);
-
 Carbon::setLocale('ru');
 date_default_timezone_set('Europe/Moscow');
 
-ContainerInitializer::init($app);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+$container = ContainerInitializer::init();
+$app = AppFactory::createFromContainer($container);
+
 MiddlewareInitializer::init($app);
 RouteInitializer::init($app);
 

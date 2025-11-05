@@ -3,7 +3,9 @@
 namespace Hexlet\Code\Initializer;
 
 use DI\Container;
+use DI\ContainerBuilder;
 use GuzzleHttp\Client;
+use Hexlet\Code\Config\AppConfig;
 use Hexlet\Code\Database\Connection;
 use Hexlet\Code\Handler\ErrorHandler;
 use Hexlet\Code\Repository\CheckRepository;
@@ -11,60 +13,38 @@ use Hexlet\Code\Repository\UrlRepository;
 use Hexlet\Code\Service\CheckService;
 use Hexlet\Code\Service\UrlCheckerService;
 use Hexlet\Code\Service\UrlCheckService;
-use Slim\App;
 use Slim\Flash\Messages;
 use Slim\Views\Twig;
+
+use function DI\autowire;
+use function DI\factory;
 
 readonly class ContainerInitializer
 {
     /**
-     * @param App<Container> $app
+     * @throws \Exception
      */
-    public static function init(App $app): void
+    public static function init(): Container
     {
-        /** @var Container $container */
-        $container = $app->getContainer();
-        $container->set(Twig::class, function () {
-            return Twig::create(__DIR__ . '/../../templates', ['cache' => false, 'debug' => true]);
-        });
+        $builder = new ContainerBuilder();
 
-        $container->set(Connection::class, function () {
-            return Connection::get();
-        });
+        $builder->addDefinitions([
+            AppConfig::class => autowire(),
 
-        $container->set(UrlRepository::class, function ($container) {
-            return new UrlRepository($container->get(Connection::class)->connect());
-        });
+            Connection::class => factory(fn(AppConfig $config) => new Connection($config->getDsn())),
+            Twig::class => factory(fn(AppConfig $config) => $config->createTwig()),
+            Client::class => factory(fn(AppConfig $config) => $config->createClient()),
 
-        $container->set(CheckRepository::class, function ($container) {
-            return new CheckRepository($container->get(Connection::class)->connect());
-        });
+            UrlRepository::class => autowire(),
+            CheckRepository::class => autowire(),
+            CheckService::class => autowire(),
+            UrlCheckService::class => autowire(),
+            UrlCheckerService::class => autowire(),
 
-        $container->set(CheckService::class, function ($container) {
-            return new CheckService($container->get(CheckRepository::class));
-        });
+            Messages::class => autowire(),
+            ErrorHandler::class => autowire()
+        ]);
 
-        $container->set(UrlCheckService::class, function ($container) {
-            return new UrlCheckService($container->get(UrlRepository::class), $container->get(CheckRepository::class));
-        });
-
-        $container->set(Client::class, function () {
-            return new Client([
-                'timeout' => 5,
-                'verify' => true,
-                'http_errors' => false,
-                'allow_redirects' => true,
-            ]);
-        });
-
-        $container->set(UrlCheckerService::class, function ($container) {
-            return new UrlCheckerService($container->get(Client::class), $container->get(UrlRepository::class));
-        });
-
-        $container->set(Messages::class, fn() => new Messages());
-
-        $container->set(ErrorHandler::class, function ($container) {
-            return new ErrorHandler($container->get(Twig::class));
-        });
+        return $builder->build();
     }
 }

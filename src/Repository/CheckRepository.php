@@ -2,16 +2,17 @@
 
 namespace Hexlet\Code\Repository;
 
+use Hexlet\Code\Database\Connection;
 use Hexlet\Code\Entity\Check;
 use PDO;
 
 class CheckRepository
 {
-    private PDO $conn;
+    private PDO $pdo;
 
-    public function __construct(PDO $conn)
+    public function __construct(Connection $connection)
     {
-        $this->conn = $conn;
+        $this->pdo = $connection->connect();
     }
 
     public function save(?Check $check): int|null
@@ -24,7 +25,7 @@ class CheckRepository
         INSERT INTO checks (url_id, status_code, h1, title, description, created_at)
         VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)
         SQL;
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'url_id' => $check->getUrlId(),
             'status_code' => $check->getStatusCode(),
@@ -34,7 +35,7 @@ class CheckRepository
             'created_at' => $check->getCreatedAt(),
         ]);
 
-        $id = (int) $this->conn->lastInsertId();
+        $id = (int) $this->pdo->lastInsertId();
         $check->setId($id);
 
         return $id;
@@ -43,7 +44,7 @@ class CheckRepository
     public function findByUrlId(int $urlId): array
     {
         $sql = "SELECT * FROM checks WHERE url_id = :url_id ORDER BY created_at DESC";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$urlId]);
         $rows = $stmt->fetchAll();
 
@@ -64,7 +65,7 @@ class CheckRepository
     public function findLastByUrlId(int $urlId): ?Check
     {
         $sql = "SELECT * FROM checks WHERE url_id = :url_id ORDER BY created_at DESC LIMIT 1";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$urlId]);
         $row = $stmt->fetch();
 

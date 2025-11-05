@@ -2,23 +2,24 @@
 
 namespace Hexlet\Code\Repository;
 
+use Hexlet\Code\Database\Connection;
 use Hexlet\Code\Entity\Url;
 use PDO;
 
 class UrlRepository
 {
-    private PDO $conn;
+    private PDO $pdo;
 
-    public function __construct(PDO $conn)
+    public function __construct(Connection $connection)
     {
-        $this->conn = $conn;
+        $this->pdo = $connection->connect();
     }
 
     public function getAll(): array
     {
         $urls = [];
         $sql = "SELECT * FROM urls ORDER BY created_at DESC";
-        $stmt = $this->conn->query($sql);
+        $stmt = $this->pdo->query($sql);
         if ($stmt === false) {
             return [];
         }
@@ -37,7 +38,7 @@ class UrlRepository
     public function findById(int $id): ?Url
     {
         $sql = "SELECT * FROM urls WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         if ($row = $stmt->fetch()) {
             $url = Url::fromArray([
@@ -54,7 +55,7 @@ class UrlRepository
     public function findByName(string $name): ?Url
     {
         $sql = "SELECT * FROM urls WHERE name = :name";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$name]);
         if ($row = $stmt->fetch()) {
             $url = Url::fromArray([
@@ -80,7 +81,7 @@ class UrlRepository
     public function update(Url $url): void
     {
         $sql = "UPDATE urls SET name = :name, created_at = :created_at WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $id = $url->getId();
         $name = $url->getName();
         $createdAt = $url->getCreatedAt();
@@ -95,14 +96,14 @@ class UrlRepository
     public function create(Url $url): void
     {
         $sql = "INSERT INTO urls (name, created_at) VALUES (:name, :created_at)";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $name = $url->getName();
         $createdAt = $url->getCreatedAt();
         $stmt->execute([
             'name' => $name,
             'created_at' => $createdAt
         ]);
-        $id = (int) $this->conn->lastInsertId();
+        $id = (int) $this->pdo->lastInsertId();
         $url->setId($id);
     }
 }
