@@ -7,6 +7,8 @@ use Hexlet\Code\Initializer\RouteInitializer;
 use Slim\Factory\AppFactory;
 use Carbon\Carbon;
 
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
