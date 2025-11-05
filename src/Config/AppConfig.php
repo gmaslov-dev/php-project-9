@@ -2,6 +2,7 @@
 
 namespace Hexlet\Code\Config;
 
+use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use Slim\Views\Twig;
 use Twig\Error\LoaderError;
@@ -10,10 +11,16 @@ class AppConfig
 {
     public function getDsn(): array
     {
-        $databaseUrl = getenv('DATABASE_URL');
+        $databaseUrl = getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? null);
+
+        if (!$databaseUrl && file_exists(__DIR__ . '/../.env')) {
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+            $dotenv->safeLoad(); // безопасная загрузка
+            $databaseUrl = getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? null);
+        }
 
         if (!$databaseUrl) {
-            $databaseUrl = $_ENV['DATABASE_URL'];
+            throw new \RuntimeException('DATABASE_URL not set');
         }
 
         $components = parse_url($databaseUrl);

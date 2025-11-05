@@ -14,8 +14,6 @@ session_start();
 Carbon::setLocale('ru');
 date_default_timezone_set('Europe/Moscow');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->safeLoad();
 $container = ContainerInitializer::init();
 $app = AppFactory::createFromContainer($container);
 
