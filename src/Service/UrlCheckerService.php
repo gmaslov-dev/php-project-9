@@ -31,9 +31,14 @@ readonly class UrlCheckerService
         $name = $url->getName();
 
         try {
-            $res = $this->httpClient->request('GET', $name);
+            $res = $this->httpClient->request('GET', $name, [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                ],
+            ]);
             $statusCode = $res->getStatusCode();
-            $doc = new Document($name, true);
+            $html = $res->getBody()->getContents();
+            $doc = new Document($html, true);
             /** @phpstan-ignore-next-line */
             $h1 = optional($doc->first('h1'))->text();
             /** @phpstan-ignore-next-line */
