@@ -38,6 +38,11 @@ readonly class UrlCheckerService
             ]);
             $statusCode = $res->getStatusCode();
             $html = $res->getBody()->getContents();
+
+            if (!$html) {
+                return null;
+            }
+
             $doc = new Document($html);
             /** @phpstan-ignore-next-line */
             $h1 = optional($doc->first('h1'))->text();
