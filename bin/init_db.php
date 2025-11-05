@@ -3,13 +3,16 @@
 
 declare(strict_types=1);
 
+use Hexlet\Code\Config\AppConfig;
 use Hexlet\Code\Database\Connection;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$pdo = Connection::get()->connect();
+$connectionData = new AppConfig()->getDsn();
 
-$sqlFile = __DIR__ . '/../src/Database/database.sql';
+$pdo = new Connection($connectionData)->connect();
+
+$sqlFile = __DIR__ . '/../database.sql';
 $sql = file_get_contents($sqlFile);
 
 if ($sql === false) {

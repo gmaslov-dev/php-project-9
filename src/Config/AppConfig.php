@@ -13,8 +13,8 @@ class AppConfig
     {
         $databaseUrl = getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? null);
 
-        if (!$databaseUrl && file_exists(__DIR__ . '/../.env')) {
-            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        if (!$databaseUrl && file_exists(__DIR__ . '/../../.env')) {
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
             $dotenv->safeLoad(); // безопасная загрузка
             $databaseUrl = getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? null);
         }
