@@ -63,7 +63,7 @@ composer install
 
 ### Настройка окружения
 
-Создайте файл `.env` в корне проекта:
+Создайте файл `.env` в корне проекта из шаблона `.env.example`:
 
 ```env
 DATABASE_URL=postgresql://username:password@localhost:5432/page_analyzer
