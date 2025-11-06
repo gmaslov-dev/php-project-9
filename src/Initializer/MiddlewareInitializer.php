@@ -22,7 +22,7 @@ readonly class MiddlewareInitializer
     {
         $container = $app->getContainer();
 
-        $errorMiddleware = $app->addErrorMiddleware(false, false, false);
+        $errorMiddleware = $app->addErrorMiddleware(true, true, true);
         $errorMiddleware->setDefaultErrorHandler($container->get(ErrorHandler::class));
 
         $app->add(MethodOverrideMiddleware::class);

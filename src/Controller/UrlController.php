@@ -5,6 +5,7 @@ namespace Hexlet\Code\Controller;
 use Hexlet\Code\Repository\UrlRepository;
 use Hexlet\Code\Service\CheckService;
 use Hexlet\Code\Service\UrlCheckService;
+use Hexlet\Code\Service\UrlService;
 use Hexlet\Code\Validator\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -54,12 +55,14 @@ class UrlController extends BaseController
         $routeParser = $this->getRouteParser($request);
         $urlData = $request->getParsedBodyParam("url");
         $errors = UrlValidator::validate($urlData);
+
         if (!$errors) {
-            $url = $this->urlRepository->findByName($urlData['name']);
+            $baseUrl = UrlService::getBaseUrl($urlData['name']);
+            $url = $this->urlRepository->findByName($baseUrl);
             if ($url) {
                 $this->addFlash('success', 'Страница уже существует');
             } else {
-                $url = Url::fromArray(['name' => $urlData['name']]);
+                $url = Url::fromArray(['name' => $baseUrl]);
                 $this->urlRepository->save($url);
                 $this->addFlash('success', 'Страница успешно добавлена');
             }

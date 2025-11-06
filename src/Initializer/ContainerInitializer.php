@@ -13,6 +13,7 @@ use Hexlet\Code\Repository\UrlRepository;
 use Hexlet\Code\Service\CheckService;
 use Hexlet\Code\Service\UrlCheckerService;
 use Hexlet\Code\Service\UrlCheckService;
+use Hexlet\Code\Service\UrlService;
 use Slim\Flash\Messages;
 use Slim\Views\Twig;
 
@@ -40,6 +41,7 @@ readonly class ContainerInitializer
             CheckService::class => autowire(),
             UrlCheckService::class => autowire(),
             UrlCheckerService::class => autowire(),
+            UrlService::class => autowire(),
 
             Messages::class => autowire(),
             ErrorHandler::class => autowire()
