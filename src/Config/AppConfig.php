@@ -33,7 +33,7 @@ readonly class AppConfig
         $host = $components['host'] ?? null;
         $user = $components['user'] ?? null;
         $pass = $components['pass'] ?? null;
-        $dbName = ltrim($components['path']  ?? null, '/');
+        $dbName = ltrim($components['path']  ?? '', '/');
 
 
         $dsn = "pgsql:host=$host;port=5432;dbname=$dbName;";
