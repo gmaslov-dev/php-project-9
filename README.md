@@ -72,7 +72,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/page_analyzer
 ### Инициализация базы данных
 
 ```bash
-composer db:init
+make db-init
 ```
 
 Или напрямую:
@@ -86,7 +86,7 @@ php bin/init_db.php
 ### Локальный запуск
 
 ```bash
-php -S localhost:8000 -t public
+make start
 ```
 
 Приложение будет доступно по адресу: `http://localhost:8000`
