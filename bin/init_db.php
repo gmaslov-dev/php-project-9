@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-declare(strict_types=1);
-
 use Hexlet\Code\Config\AppConfig;
 use Hexlet\Code\Database\Connection;
 

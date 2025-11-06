@@ -19,6 +19,7 @@ jobs:
       # run – произвольная bash-команда
       - run: make install
       - run: make lint
+      - run: make analyse
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5

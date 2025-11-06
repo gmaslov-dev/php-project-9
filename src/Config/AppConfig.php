@@ -4,10 +4,11 @@ namespace Hexlet\Code\Config;
 
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
+use RuntimeException;
 use Slim\Views\Twig;
 use Twig\Error\LoaderError;
 
-class AppConfig
+readonly class AppConfig
 {
     public function getDsn(): array
     {
@@ -20,14 +21,19 @@ class AppConfig
         }
 
         if (!$databaseUrl) {
-            throw new \RuntimeException('DATABASE_URL not set');
+            throw new RuntimeException('DATABASE_URL not set');
         }
 
         $components = parse_url($databaseUrl);
-        $host = $components['host'];
-        $user = $components['user'];
-        $pass = $components['pass'];
-        $dbName = ltrim($components['path'], '/');
+
+        if ($components === false) {
+            throw new RuntimeException("Invalid DATABASE_URL: $databaseUrl");
+        }
+
+        $host = $components['host'] ?? null;
+        $user = $components['user'] ?? null;
+        $pass = $components['pass'] ?? null;
+        $dbName = ltrim($components['path']  ?? null, '/');
 
 
         $dsn = "pgsql:host=$host;port=5432;dbname=$dbName;";

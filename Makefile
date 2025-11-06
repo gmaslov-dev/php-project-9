@@ -5,8 +5,18 @@ start:
 install:
 	composer install
 
+db-init:
+	./bin/init_db.php
+
 analyse:
-	composer analyse
+	php -d memory_limit=-1 vendor/bin/phpstan analyse
 
 lint:
 	composer lint
+
+help:
+	@echo "make start     — запустить сервер"
+	@echo "make install   — установить зависимости"
+	@echo "make db-init   — инициализировать БД"
+	@echo "make analyse   — статический анализ"
+	@echo "make lint      — линтинг"
