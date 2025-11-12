@@ -6,6 +6,8 @@
     },
     "name": "hexlet/code",
     "type": "project",
+    "description": "php-slim project",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Hexlet\\Code\\": "src/"
