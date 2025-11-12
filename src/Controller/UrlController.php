@@ -74,7 +74,6 @@ class UrlController extends BaseController
         }
 
         $params = [
-            'title' => 'Главная страница',
             'url' => $urlData,
             'errors' => $errors,
         ];
@@ -97,7 +96,6 @@ class UrlController extends BaseController
         $checks = $this->checkService->getChecksForUrl($id);
 
         $data = [
-            'title' => $url->getName(),
             'url' => $url,
             'messages' => $this->getFlash(),
             'checks' => $checks,

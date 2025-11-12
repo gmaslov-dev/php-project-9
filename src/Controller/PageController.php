@@ -20,7 +20,6 @@ class PageController extends BaseController
         $response = $response->withHeader('Content-Type', 'text/html; charset=UTF-8');
 
         $data = [
-            'title' => 'Home',
             'errors' => [],
             'url' => '',
             'current_path' => $request->getUri()->getPath()
