@@ -14,9 +14,18 @@ analyse:
 lint:
 	composer lint
 
+env-create:
+	@if [ ! -f .env ]; then \
+		cp .env.example .env && \
+		echo "Файл .env создан из .env.example"; \
+	else \
+		echo "Файл .env уже существует."; \
+	fi
+
 help:
-	@echo "make start     — запустить сервер"
-	@echo "make install   — установить зависимости"
-	@echo "make db-init   — инициализировать БД"
-	@echo "make analyse   — статический анализ"
-	@echo "make lint      — линтинг"
+	@echo "make start      — запустить сервер"
+	@echo "make install    — установить зависимости"
+	@echo "make db-init    — инициализировать БД"
+	@echo "make analyse    — статический анализ"
+	@echo "make lint       — линтинг"
+	@echo "make env-create — создать .env из .env.example"

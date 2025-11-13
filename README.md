@@ -41,7 +41,7 @@
 
 ## 📋 Требования
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Composer
 - PostgreSQL >= 13
 - Расширения PHP: pdo, pdo_pgsql, dom
@@ -137,6 +137,22 @@ php -d memory_limit=-1 vendor/bin/phpstan analyse
 
 lint:
 composer lint
+
+env-create:
+	@if [ ! -f .env ]; then \
+		cp .env.example .env && \
+		echo "Файл .env создан из .env.example"; \
+	else \
+		echo "Файл .env уже существует."; \
+	fi
+	
+help:
+	@echo "make start      — запустить сервер"
+	@echo "make install    — установить зависимости"
+	@echo "make db-init    — инициализировать БД"
+	@echo "make analyse    — статический анализ"
+	@echo "make lint       — линтинг"
+	@echo "make env-create — создать .env из .env.example"
 ```
 
 🔍 Описание целей
@@ -148,6 +164,8 @@ composer lint
 | `make db-init`| Инициализация базы данных через `bin/init_db.php`            |
 | `make analyse`| Статический анализ проекта PHPStan                           |
 | `make lint`   | Проверка стиля кода PHP_CodeSniffer                          |
+| `make env-create`   | Создание .env файла                                          |
+| `make help`   | Справка                                                      |
 
 
 ## 🏗 Архитектура
