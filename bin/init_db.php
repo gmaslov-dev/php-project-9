@@ -6,9 +6,11 @@ use Hexlet\Code\Database\Connection;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$connectionData = new AppConfig()->getDsn();
+$config = new AppConfig();
+$connectionData = $config->getDsn();
 
-$pdo = new Connection($connectionData)->connect();
+$connection = new Connection($connectionData);
+$pdo = $connection->connect();
 
 $sqlFile = __DIR__ . '/../database.sql';
 $sql = file_get_contents($sqlFile);
